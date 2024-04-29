@@ -6,11 +6,13 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
 import java.time.LocalDate;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
- * Entity class representing a user.
+ * Entity representing a user.
  */
 @Data
+@Accessors(chain = true)
 public class User {
     private int id;
 
@@ -32,12 +34,4 @@ public class User {
 
     @NotBlank
     private String address;
-
-    public LocalDate birthDate() {
-        return birthDate;
-    }
-
-    public int id() {
-        return id;
-    }
 }

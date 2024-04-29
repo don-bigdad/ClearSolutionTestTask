@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class UserService {
     private final UserAgeValidator ageValidator;
+    @Getter
     private final List<User> users = new ArrayList<>();
     private int nextId = 1;
     private final UserMapper userMapper;
@@ -76,7 +78,8 @@ public class UserService {
     public List<User> findAllByBirthDateBetween(LocalDate fromDate,
                                                 LocalDate toDate) {
         return users.stream()
-                .filter(user -> user.birthDate().isAfter(fromDate) && user.birthDate().isBefore(toDate.plusDays(1)))
+                .filter(user -> user.getBirthDate().isAfter(fromDate)
+                        && user.getBirthDate().isBefore(toDate.plusDays(1)))
                 .collect(Collectors.toList());
     }
 
@@ -103,7 +106,7 @@ public class UserService {
 
     private User getUserById(int id) {
         for (User user : users) {
-            if (user.id() == id) {
+            if (user.getId() == id) {
                 return user;
             }
         }
@@ -112,10 +115,10 @@ public class UserService {
     }
 
     private User ageVerification(User user) throws ValidationException {
-        if (ageValidator.isUserOldEnough(user.birthDate())) {
+        if (ageValidator.isUserOldEnough(user.getBirthDate())) {
             return user;
         } else {
-            throw new ValidationException("User is not old enough");
+            throw new ValidationException("User is not old enough.");
         }
     }
 }
