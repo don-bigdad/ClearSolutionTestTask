@@ -1,5 +1,6 @@
 package com.example.clearsolutiontesttask.exception;
 
+import jakarta.persistence.EntityNotFoundException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,16 +18,19 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
-    @ExceptionHandler(RegistrationException.class)
-    public ResponseEntity<Object> handleRegistrationException(
-            RegistrationException ex) {
-        return new ResponseEntity<>(ex.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<Object> handleEntityNotFoundException(
+            EntityNotFoundException ex) {
+        return new ResponseEntity<>(ex.getLocalizedMessage(),
+                HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
+    @ExceptionHandler(ValidationException.class)
     public ResponseEntity<Object> handleEntityNotFoundException(
-            UserNotFoundException ex) {
-        return new ResponseEntity<>(ex.getLocalizedMessage(), HttpStatus.NOT_FOUND);
+            ValidationException ex) {
+        return new ResponseEntity<>(ex.getLocalizedMessage(),
+                HttpStatus.BAD_REQUEST);
     }
 
     @Override
@@ -34,12 +38,12 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
             MethodArgumentNotValidException ex,
             HttpHeaders headers, HttpStatusCode status,
             WebRequest request) {
-        Map<String,Object> body = new LinkedHashMap<>();
+        Map<String, Object> body = new LinkedHashMap<>();
         List<String> errors = ex.getBindingResult().getAllErrors().stream()
                 .map(this::getErrorMessage)
                 .toList();
         body.put("errors", errors);
-        return new ResponseEntity<>(body,headers,status);
+        return new ResponseEntity<>(body, headers, status);
     }
 
     private String getErrorMessage(ObjectError e) {
