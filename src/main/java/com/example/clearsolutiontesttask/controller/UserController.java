@@ -42,8 +42,8 @@ public class UserController {
      */
     @PostMapping(value = "/add")
     @ResponseStatus(HttpStatus.CREATED)
-
-    public void addNewUser(@RequestBody @Valid User createUserRequest) throws ValidationException {
+    public void addNewUser(@RequestBody @Valid User createUserRequest)
+            throws ValidationException {
         userService.addUser(createUserRequest);
     }
 
@@ -55,6 +55,7 @@ public class UserController {
      * not found.
      */
     @DeleteMapping(value = "/delete/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable @Positive int id) throws EntityNotFoundException {
         userService.deleteUser(id);
     }
@@ -70,6 +71,7 @@ public class UserController {
      * or specified an invalid email.
      */
     @PutMapping(value = "/update/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public void updateUser(@RequestBody @Valid User updateUserRequest,
                            @PathVariable @Positive int id) throws EntityNotFoundException,
             ValidationException {
@@ -87,6 +89,7 @@ public class UserController {
      * specified an invalid email.
      */
     @PatchMapping(value = "/updateField/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public void updateUserField(@RequestBody @Valid UpdateFieldRequest fields,
                                 @PathVariable @Positive int id) throws EntityNotFoundException, ValidationException {
         userService.updateUserField(fields, id);
@@ -100,6 +103,7 @@ public class UserController {
      * @return A list of users within the specified age range.
      */
     @GetMapping(value = "/age")
+    @ResponseStatus(HttpStatus.OK)
     public List<User> findUsersByAgeBetween(@RequestParam("fromDate")
                                             @DateTimeFormat(iso =
                                                     DateTimeFormat.ISO.DATE) LocalDate fromDate,

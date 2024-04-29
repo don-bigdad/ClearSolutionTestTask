@@ -47,10 +47,11 @@ public class UserService {
      */
     public void updateUser(User request, int id) throws EntityNotFoundException,
             ValidationException {
-        getUserById(id);
+        // Checking that the user exists and taking its index from the list
+        int index = users.indexOf(getUserById(id));
         var user = ageVerification(request);
         user.setId(id);
-        users.set(id - 1, user);
+        users.set(index, user);
     }
 
     /**
@@ -92,10 +93,12 @@ public class UserService {
     public void updateUserField(UpdateFieldRequest updateRequest, int id) throws
             ValidationException {
         var userById = getUserById(id);
-        var updatedUser = userMapper.updateUserFromRequest(updateRequest,
-                userById);
+        int index = users.indexOf(userById);
+
+        var updatedUser = userMapper.toUser(updateRequest, userById);
+
         ageVerification(updatedUser);
-        users.set(id - 1, updatedUser);
+        users.set(index, updatedUser);
     }
 
     private User getUserById(int id) {

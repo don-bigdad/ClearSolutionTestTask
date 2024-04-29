@@ -26,5 +26,5 @@ public interface UserMapper {
      * @return The updated User object.
      */
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    User updateUserFromRequest(UpdateFieldRequest request, @MappingTarget User user);
+    User toUser(UpdateFieldRequest request, @MappingTarget User user);
 }
