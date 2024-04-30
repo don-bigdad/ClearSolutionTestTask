@@ -42,3 +42,26 @@ To run the project, follow these steps:
 
 ## Testing
 The project includes unit tests for the service layer and controller layer. To run the tests, use `mvn test`.
+
+## Request example (in JSON)
+- Create user (path: http://localhost:8088/users/add)
+  {
+  "email": "example@example.com",
+  "firstName": "John",
+  "lastName": "Doe",
+  "birthDate": "2005-04-30",
+  "address": "123 Main St",
+  "phoneNumber": "123-456-7890"
+  }
+- Update User (path:http://localhost:8088/users/update/1)
+    Note that user must exist to update him.
+  {
+  "email": "newMail@example.com",
+  "firstName": "John",
+  "lastName": "Doe",
+  "birthDate": "2005-01-01",
+  "address": "123 Main St",
+  "phoneNumber": "123 Main St"
+  }
+- Delete User(http://localhost:8088/users/delete/1)
+- Get User by birthdate range (http://localhost:8088/users/age?fromDate=2004-01-01&toDate=2022-12-31)
